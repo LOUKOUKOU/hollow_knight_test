@@ -15,7 +15,7 @@ public class SpearAI : MonoBehaviour
     private const int MAX_WAIT = 5;
     private const int MAX_ATTACK = 5;
     private const int MAX_ATTACKED = 0;
-    private const int MAX_BLOCK = 8;
+    private const int MAX_BLOCK = 5;
 
     private int _direction = 1;
 
@@ -52,13 +52,17 @@ public class SpearAI : MonoBehaviour
             update = 0.0f;
             if (!suspendUpdater)
             {
-                if (attackedCount <= 0)
+                if (blockCount <= 0)
                 {
                     if (patrolCount <= 0)
                     {
                         if (walking)
                         {
                             toggleWalk();
+                        }
+                        if (blocking)
+                        {
+                            toggleBlock();
                         }
 
                         if (waitCount <= 0)
@@ -94,14 +98,7 @@ public class SpearAI : MonoBehaviour
                     }
                 } else
                 {
-                    attackedCount--;
-                    if (attackedCount <= 0)
-                    {
-                        if (blocking)
-                        {
-                            toggleBlock();
-                        }
-                    }
+                    blockCount--;
                 }
             } 
         }
@@ -140,7 +137,6 @@ public class SpearAI : MonoBehaviour
         _animator.SetTrigger("Attacked");
         if (!blocking)
         {
-            Debug.Log(attackedCount);
             if (attackedCount <= 0)
             {
                 if (walking)
